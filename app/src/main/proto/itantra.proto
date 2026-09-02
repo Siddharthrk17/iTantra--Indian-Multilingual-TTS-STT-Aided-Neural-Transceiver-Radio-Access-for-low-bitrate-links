@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package com.example.itantra.protocol;
+
+option java_package = "com.example.itantra.protocol";
+option java_multiple_files = true;
+
+message ITantraEnvelope {
+    string message_id = 1;
+    string sender_id = 2;
+    string timestamp = 3;
+    MessageType type = 4;
+    string original_language = 5;
+    string target_language = 6;
+    string payload = 7;
+    bool ack_required = 8;
+
+    enum MessageType {
+        TEXT = 0;
+        VOICE = 1;
+        SYSTEM = 2;
+    }
+}
+
+message ITantraAck {
+    string ack_of = 1;
+    AckStatus status = 2;
+    string timestamp = 3;
+
+    enum AckStatus {
+        DELIVERED = 0;
+        FAILED = 1;
+    }
+}
+
+// A wrapper message for the stream
+message ITantraMessage {
+    oneof content {
+        ITantraEnvelope envelope = 1;
+        ITantraAck ack = 2;
+    }
+}
