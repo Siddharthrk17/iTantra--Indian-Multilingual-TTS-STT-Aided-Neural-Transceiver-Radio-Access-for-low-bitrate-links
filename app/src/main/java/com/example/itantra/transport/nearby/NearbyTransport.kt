@@ -72,6 +72,7 @@ class NearbyTransport(
     }
 
     fun startAdvertising(name: String) {
+        connectionsClient.stopAdvertising()
         val options = AdvertisingOptions.Builder().setStrategy(strategy).build()
         connectionsClient.startAdvertising(name, serviceId, connectionLifecycleCallback, options)
             .addOnSuccessListener { Logger.d("Nearby: Advertising started as $name") }
@@ -79,6 +80,7 @@ class NearbyTransport(
     }
 
     fun startDiscovery() {
+        connectionsClient.stopDiscovery()
         val options = DiscoveryOptions.Builder().setStrategy(strategy).build()
         connectionsClient.startDiscovery(serviceId, endpointDiscoveryCallback, options)
             .addOnSuccessListener { Logger.d("Nearby: Discovery started") }
